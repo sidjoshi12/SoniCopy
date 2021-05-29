@@ -49,6 +49,7 @@ public class FileObserverService extends Service {
                 replicate.ProcessFiles(yoursrc,yourbackup);
             }
         };
+        mImagesObserver.startWatching(); // The FileObserver starts watching
 
         //Videos
         mVideoObserver = new FileObserver(mSource+ File.separator + "Media/WhatsApp Video") {
@@ -66,7 +67,6 @@ public class FileObserverService extends Service {
             }
         };
         mVideoObserver.startWatching(); // The FileObserver starts watching
-        mImagesObserver.startWatching(); // The FileObserver starts watching
     }
 
     @Override

@@ -51,5 +51,13 @@
         android:background="@color/teal"
         android:layout_marginTop="1pt"
         android:textAllCaps="false"
+        android:visibility="gone"
         android:id="@+id/btnStart"/>
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/SwitchTheme"
+        android:text="Service" />
 </LinearLayout>

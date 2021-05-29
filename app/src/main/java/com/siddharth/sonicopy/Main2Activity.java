@@ -1,6 +1,7 @@
 package com.siddharth.sonicopy;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +32,7 @@ public class Main2Activity extends AppCompatActivity {
     EditText txtSource,txtBackup;
     Context context;
     SharedPreferences sharedPref;
+    Switch swService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class Main2Activity extends AppCompatActivity {
         txtBackup=(EditText)findViewById(R.id.edBackup);
         context = getBaseContext();
         sharedPref = context.getSharedPreferences("mypref", Context.MODE_PRIVATE);
+        swService=(Switch)findViewById(R.id.switch1);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED) {
@@ -55,6 +60,33 @@ public class Main2Activity extends AppCompatActivity {
             txtSource.setText(sharedPref.getString("source",src));
             txtBackup.setText(sharedPref.getString("backup",backup));
 
+
+        boolean isServiceRunning = isMyServiceRunning(FileObserverService.class);
+        swService.setChecked(isServiceRunning);
+
+        swService.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    Intent intent = new Intent(context, FileObserverService.class);
+                    intent.putExtra("Source", txtSource.getText().toString());
+                    intent.putExtra("Backup", txtBackup.getText().toString());
+                    DataVariables.Source= txtSource.getText().toString();
+                    DataVariables.Backup= txtBackup.getText().toString();
+                    context.startService(intent);
+                }
+                boolean isServiceRunning = isMyServiceRunning(FileObserverService.class);
+                swService.setChecked(isServiceRunning);
+            }
+        });
+    }
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
     public void Manual_Click(View v){
         v.setBackgroundColor(Color.rgb(255,140,0));//Dark Orange
@@ -84,8 +116,17 @@ public class Main2Activity extends AppCompatActivity {
         DataVariables.Source= txtSource.getText().toString();
         DataVariables.Backup= txtBackup.getText().toString();
         this.startService(intent);
-    }
 
+        boolean isServiceRunning = isMyServiceRunning(FileObserverService.class);
+        swService.setChecked(isServiceRunning);
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        // put your code here...
+        boolean isServiceRunning = isMyServiceRunning(FileObserverService.class);
+        swService.setChecked(isServiceRunning);
+    }
     private void CreateDirectoryIfNotExist(){
         File SoniCopy = new File(txtBackup.getText().toString());
         if (!SoniCopy.exists())
