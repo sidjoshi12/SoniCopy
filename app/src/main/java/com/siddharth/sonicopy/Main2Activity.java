@@ -68,11 +68,14 @@ public class Main2Activity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     Intent intent = new Intent(context, FileObserverService.class);
-                    intent.putExtra("Source", txtSource.getText().toString());
-                    intent.putExtra("Backup", txtBackup.getText().toString());
+                    //intent.putExtra("Source", txtSource.getText().toString());
+                    //intent.putExtra("Backup", txtBackup.getText().toString());
                     DataVariables.Source= txtSource.getText().toString();
                     DataVariables.Backup= txtBackup.getText().toString();
                     context.startService(intent);
+                }
+                else{
+                    stopService(new Intent(Main2Activity.this, FileObserverService.class));
                 }
                 boolean isServiceRunning = isMyServiceRunning(FileObserverService.class);
                 swService.setChecked(isServiceRunning);

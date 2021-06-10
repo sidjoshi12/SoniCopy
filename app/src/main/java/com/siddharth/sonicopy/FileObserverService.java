@@ -23,8 +23,8 @@ public class FileObserverService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mSource=intent.getStringExtra("Source");
-        mBackup=intent.getStringExtra("Backup");
+        //mSource=intent.getStringExtra("Source");
+        //mBackup=intent.getStringExtra("Backup");
 
         return Service.START_NOT_STICKY;
     }

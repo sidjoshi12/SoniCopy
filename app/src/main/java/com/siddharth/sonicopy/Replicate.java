@@ -33,6 +33,9 @@ public class Replicate {
                 }
             }
         }
+        for(File file:yourbackup.listFiles()){
+            DeleteOldFiles(file);
+        }
     }
     private static boolean isSameDay(Date date1, Date date2) {
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
@@ -53,8 +56,8 @@ public class Replicate {
             if (outChannel != null) outChannel.close();
         }
     }
-    private void DeleteOldFiles(File file,int days){
-        days=3;
+    private void DeleteOldFiles(File file){
+        int days=2;
         Calendar c = Calendar.getInstance();
         Date today = c.getTime();
         Date lastModDate = new Date(file.lastModified());
