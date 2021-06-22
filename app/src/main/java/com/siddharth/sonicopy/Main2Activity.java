@@ -60,7 +60,6 @@ public class Main2Activity extends AppCompatActivity {
             txtSource.setText(sharedPref.getString("source",src));
             txtBackup.setText(sharedPref.getString("backup",backup));
 
-
         boolean isServiceRunning = isMyServiceRunning(FileObserverService.class);
         swService.setChecked(isServiceRunning);
 
@@ -123,6 +122,34 @@ public class Main2Activity extends AppCompatActivity {
         boolean isServiceRunning = isMyServiceRunning(FileObserverService.class);
         swService.setChecked(isServiceRunning);
     }
+    public void Status_Click(View v){
+        //Save Path
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("Source",txtSource.getText().toString());
+        editor.putString("Backup",txtBackup.getText().toString());
+        editor.commit();
+
+        File WhatsappStatus= new File(txtBackup.getText().toString()+ File.separator + "Whatsapp Status");
+        if (!WhatsappStatus.exists())
+            WhatsappStatus.mkdirs();
+
+        Replicate replicate=new Replicate();
+        //Status
+        File yoursrc = new File(txtSource.getText().toString()+ File.separator + "Media/.Statuses");
+        File yourbackup = new File(txtBackup.getText().toString() + File.separator + "Whatsapp Status");
+        try{
+            for (File f : yoursrc.listFiles()) {
+                if (f.isFile()) {
+                    String name = f.getName();
+                    File newFile=new File(yourbackup+ File.separator +name);
+                    if(!name.equals(".nomedia") && !newFile.exists())
+                        replicate.CopyStatus(f,yourbackup,true);
+                }
+            }
+        }catch (Exception ex){
+
+        }
+    }
     @Override
     public void onResume(){
         super.onResume();
@@ -142,5 +169,9 @@ public class Main2Activity extends AppCompatActivity {
         File WhatsappVideo= new File(txtBackup.getText().toString()+ File.separator + "WhatsApp Video");
         if (!WhatsappVideo.exists())
          WhatsappVideo.mkdirs();
+
+        File WhatsappStatus= new File(txtBackup.getText().toString()+ File.separator + "Whatsapp Status");
+        if (!WhatsappStatus.exists())
+            WhatsappStatus.mkdirs();
     }
 }

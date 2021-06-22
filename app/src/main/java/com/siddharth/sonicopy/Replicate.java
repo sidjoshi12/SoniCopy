@@ -56,6 +56,21 @@ public class Replicate {
             if (outChannel != null) outChannel.close();
         }
     }
+    public void CopyStatus(File src, File dest,boolean isCopy) throws IOException {
+        File newFile = new File(dest, src.getName());
+        FileChannel outChannel = null;
+        FileChannel inputChannel = null;
+        try {
+            outChannel = new FileOutputStream(newFile).getChannel();
+            inputChannel = new FileInputStream(src).getChannel();
+            inputChannel.transferTo(0, inputChannel.size(), outChannel);
+            inputChannel.close();
+            if(!isCopy)src.delete();
+        } finally {
+            if (inputChannel != null) inputChannel.close();
+            if (outChannel != null) outChannel.close();
+        }
+    }
     private void DeleteOldFiles(File file){
         int days=2;
         Calendar c = Calendar.getInstance();

@@ -41,6 +41,7 @@
         android:background="@color/teal"
         android:layout_marginBottom="1pt"
         android:textAllCaps="false"
+        android:textColor="@color/white"
         android:id="@+id/btnOK"/>
 
     <Button
@@ -52,6 +53,7 @@
         android:layout_marginTop="1pt"
         android:textAllCaps="false"
         android:visibility="gone"
+        android:textColor="@color/white"
         android:id="@+id/btnStart"/>
 
     <Switch
@@ -60,4 +62,14 @@
         android:layout_height="wrap_content"
         android:theme="@style/SwitchTheme"
         android:text="Service" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:onClick="Status_Click"
+        android:background="@color/teal"
+        android:textColor="@color/white"
+        android:layout_marginTop="1pt"
+        android:textAllCaps="false"
+        android:id="@+id/btnStatus"/>
 </LinearLayout>
